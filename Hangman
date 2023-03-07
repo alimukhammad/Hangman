@@ -7,8 +7,12 @@ public class Hangman{
     private int numGuesses;
     private ArrayList<Character> guessedLetters = new ArrayList<>();
 
-    Random random = new Random();
-    wordToGuess = words[random.nextInt(words.length)];
+    public void initialize() {
+        wordToGuess = getRandomWord();
+        guessedLetters = new HashSet<>();
+        numGuesses = 0;
+        printStatus();
+    }
 
     public void drawHangman(int numWongGuesses){
         System.out.println(" _______     ");
@@ -66,7 +70,11 @@ public class Hangman{
         }
     }
 
-
+    public static void main(String[] args) {
+        Hangman hangman = new Hangman();
+        hangman.initialize();
+        hangman.playGame();
+    }
 
 
 }
