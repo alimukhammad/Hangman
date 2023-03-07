@@ -1,16 +1,16 @@
+import java.util.*;
 
-
-public class Hangman{
+public class Hangman {
     
-    private String[] words = {"computer", "java", "programming","coding", "algorithm", "debugging"};
+    private static final String[] WORDS = {"computer", "java", "programming", "coding", "algorithm", "debugging"};
+    private static final int MAX_NUM_GUESSES = 6;
+
     private String wordToGuess;
     private int numGuesses;
     private ArrayList<Character> guessedLetters = new ArrayList<>();
+    private Scanner scanner = new Scanner(System.in);
 
-    Random random = new Random();
-    wordToGuess = words[random.nextInt(words.length)];
-
-    public void drawHangman(int numWongGuesses){
+    public void drawHangman(int numWrongGuesses) {
         System.out.println(" _______     ");
         System.out.println("|       |    ");
         System.out.println("|       " + (numWrongGuesses > 0 ? "O" : ""));
@@ -21,7 +21,7 @@ public class Hangman{
         System.out.println("_____________");
     }
 
-    public void printStatus(){
+    public void printStatus() {
         System.out.println("Word: ");
         for (int i = 0; i < wordToGuess.length(); i++) {
             char c = wordToGuess.charAt(i);
@@ -39,8 +39,26 @@ public class Hangman{
         System.out.println();
     }
 
+    public void initialize() {
+        Random random = new Random();
+        wordToGuess = WORDS[random.nextInt(WORDS.length)];
+        numGuesses = 0;
+        guessedLetters.clear();
+        printStatus();
+    }
+
+    public boolean isWordGuessed() {
+        for (int i = 0; i < wordToGuess.length(); i++) {
+            char c = wordToGuess.charAt(i);
+            if (!guessedLetters.contains(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void playGame() {
-        while (numGuesses < maxNumGuesses && !isWordGuessed()) {
+        while (numGuesses < MAX_NUM_GUESSES && !isWordGuessed()) {
             System.out.println("Guess a letter: ");
             String input = scanner.nextLine();
             if (input.length() != 1) {
@@ -49,24 +67,11 @@ public class Hangman{
             }
             char c = input.charAt(0);
             if (guessedLetters.contains(c)) {
-                System.out.println("You already guessed that letter. Please try again.");
-                continue;
+                System.out.println("You already guessed that letter. Please try")
+
             }
-            guessedLetters.add(c);
-            if (wordToGuess.indexOf(c) == -1) {
-                numGuesses++;
-                drawHangman(numGuesses);
-            }
-            printStatus();
-        }
-        if (isWordGuessed()) {
-            System.out.println("Congratulations, you guessed the word!");
-        } else {
-            System.out.println("Sorry, you ran out of guesses. The word was " + wordToGuess + ".");
+            
         }
     }
-
-
-
-
 }
+
