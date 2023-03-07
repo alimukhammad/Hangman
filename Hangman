@@ -1,0 +1,72 @@
+
+
+public class Hangman{
+    
+    private String[] words = {"computer", "java", "programming","coding", "algorithm", "debugging"};
+    private String wordToGuess;
+    private int numGuesses;
+    private ArrayList<Character> guessedLetters = new ArrayList<>();
+
+    Random random = new Random();
+    wordToGuess = words[random.nextInt(words.length)];
+
+    public void drawHangman(int numWongGuesses){
+        System.out.println(" _______     ");
+        System.out.println("|       |    ");
+        System.out.println("|       " + (numWrongGuesses > 0 ? "O" : ""));
+        System.out.println("|      " + (numWrongGuesses > 1 ? "/" : "") + (numWrongGuesses > 2 ? "|" : "") + (numWrongGuesses > 3 ? "\\" : ""));
+        System.out.println("|      " + (numWrongGuesses > 4 ? "/" : "") + " " + (numWrongGuesses > 5 ? "\\" : ""));
+        System.out.println("|             ");
+        System.out.println("|             ");
+        System.out.println("_____________");
+    }
+
+    public void printStatus(){
+        System.out.println("Word: ");
+        for (int i = 0; i < wordToGuess.length(); i++) {
+            char c = wordToGuess.charAt(i);
+            if (guessedLetters.contains(c)) {
+                System.out.print(c + " ");
+            } else {
+                System.out.print("_ ");
+            }
+        }
+        System.out.println("\nNumber of incorrect guesses: " + numGuesses);
+        System.out.print("Letters already guessed: ");
+        for (char c : guessedLetters) {
+            System.out.print(c + " ");
+        }
+        System.out.println();
+    }
+
+    public void playGame() {
+        while (numGuesses < maxNumGuesses && !isWordGuessed()) {
+            System.out.println("Guess a letter: ");
+            String input = scanner.nextLine();
+            if (input.length() != 1) {
+                System.out.println("Please enter a single letter.");
+                continue;
+            }
+            char c = input.charAt(0);
+            if (guessedLetters.contains(c)) {
+                System.out.println("You already guessed that letter. Please try again.");
+                continue;
+            }
+            guessedLetters.add(c);
+            if (wordToGuess.indexOf(c) == -1) {
+                numGuesses++;
+                drawHangman(numGuesses);
+            }
+            printStatus();
+        }
+        if (isWordGuessed()) {
+            System.out.println("Congratulations, you guessed the word!");
+        } else {
+            System.out.println("Sorry, you ran out of guesses. The word was " + wordToGuess + ".");
+        }
+    }
+
+
+
+
+}
